@@ -31,3 +31,8 @@
 # Debug files
 *.dSYM/
 *.su
+
+# executable
+dd2hex
+hex2dd
+hostinfo
