@@ -36,3 +36,5 @@
 dd2hex
 hex2dd
 hostinfo
+echoclient
+echoserver

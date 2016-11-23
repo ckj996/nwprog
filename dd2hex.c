@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	unsigned int addr;
 
 	if (argc != 2 || !inet_aton(argv[1], &inaddr)) {
-		fprintf(stderr, "Useage: %s <dotted-decimal>\n", argv[0]);
+		fprintf(stderr, "usage: %s <dotted-decimal>\n", argv[0]);
 	} else {
 		addr = htonl(inaddr.s_addr);
 		printf("0x%08x\n", addr);

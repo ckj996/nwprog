@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	unsigned int addr;
 
 	if (argc != 2 || sscanf(argv[1], "%x", &addr) != 1) {
-		fprintf(stderr, "Useage: %s <hexadecimal>\n", argv[0]);
+		fprintf(stderr, "usage: %s <hexadecimal>\n", argv[0]);
 	} else {
 		inaddr.s_addr = ntohl(addr);
 		puts(inet_ntoa(inaddr));
