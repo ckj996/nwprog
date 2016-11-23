@@ -7,6 +7,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <sys/wait.h>
+#include <sys/types.h>
 
 #ifndef MAXLINE
 #define MAXLINE 1024
@@ -42,8 +44,14 @@ int main(int argc, char **argv)
 					hp->h_name, haddrp);
 		}
 
-		echo(connfd);
-		close(connfd);
+		if (fork() == 0) {
+			echo(connfd);
+			close(connfd);
+			exit(0);
+		} else {
+			while (waitpid(-1, NULL, WNOHANG) > 0)
+				;
+		}
 	}
 	exit(0);
 }
