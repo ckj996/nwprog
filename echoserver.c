@@ -15,6 +15,7 @@
 #endif
 
 void echo(int connfd);
+void sigchld_handler(int sig);
 
 int main(int argc, char **argv)
 {
@@ -30,6 +31,7 @@ int main(int argc, char **argv)
 	}
 	port = atoi(argv[1]);
 
+	signal(SIGCHLD, sigchld_handler);
 	listenfd = open_listenfd(port);
 	for (;;) {
 		clientlen = sizeof(clientaddr);
@@ -45,13 +47,12 @@ int main(int argc, char **argv)
 		}
 
 		if (fork() == 0) {
+			close(listenfd);
 			echo(connfd);
 			close(connfd);
 			exit(0);
-		} else {
-			while (waitpid(-1, NULL, WNOHANG) > 0)
-				;
 		}
+		close(connfd);
 	}
 	exit(0);
 }
@@ -69,4 +70,10 @@ void echo(int connfd)
 		n = strlen(buf);
 		rio_writen(connfd, buf, n);
 	}
+}
+
+void sigchld_handler(int sig)
+{
+	while (waitpid(-1, NULL, WNOHANG) > 0)
+		;
 }
